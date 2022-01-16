@@ -1,1 +1,17 @@
-test
+### RBACリソースの作成
+kubectl apply -f cluster-role.yml
+kubectl apply -f service-account.yml
+kubectl apply -f cluster-role-binding.yml
+
+### 確認コマンド
+kubectl get clusterrole | grep pod-reader
+kubectl -n kube-system get serviceaccount
+kubectl get clusterrolebinding | grep pod-reader-binding
+
+### pod-readerのデプロイ
+kubectl apply -f pod-reader.yml
+kubectl -n kube-system logs -f gihyo-pod-reader  # Podの一覧が正しく取得できること
+
+### deployment-readerのデプロイ
+kubectl apply -f deployment-reader.yml
+kubectl -n kube-system logs -f gihyo-deployment-reader # Podの一覧が取得できないこと ←　のはずだが、取得できてしまう
